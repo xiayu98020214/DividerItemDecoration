@@ -12,8 +12,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
-        DividerGridItemDecoration divider = new DividerGridItemDecoration(this);
-        divider.marginResId(R.dimen.top,R.dimen.bottom).color(0x0000ff).widthResId(R.dimen.width);
+        DividerGridItemDecoration divider = DividerGridItemDecoration.newBuilder(this)
+                .mColor(0xff0000)
+                .margin(R.dimen.top,R.dimen.bottom)
+                .mWidth(R.dimen.width)
+                .build();
+        DividerGridItemDecoration divider1= new DividerGridItemDecoration(this);
+        rv.addItemDecoration(divider1);
         rv.setLayoutManager(new GridLayoutManager(this,3));
         rv.addItemDecoration(divider);
         rv.setAdapter(new MainPlanAdapter(this));

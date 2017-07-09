@@ -20,13 +20,13 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
 
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
     private Drawable mDivider;
-    private Paint mPaint;
+    private Paint mPaint=new Paint();
 
     private int mWidth = 4;
     private int divider_topmargin = 10;
     private int divider_bottommargin = 10;
     private Context mContext;
-    private int mColor;
+    private int mColor = 0xffff0000;
 
     public DividerGridItemDecoration(Context context) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
@@ -36,6 +36,21 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
         mPaint.setColor(mColor);
         mPaint.setStrokeWidth(mWidth);
         a.recycle();
+    }
+
+    private DividerGridItemDecoration(Builder builder) {
+        mWidth = builder.mWidth;
+        mContext = builder.mContext;
+        mColor = builder.mColor;
+      //  divider_topmargin = builder.divider_topmargin;
+      //  divider_bottommargin = builder.divider_bottommargin;
+        mPaint.setColor(mColor);
+        mPaint.setStrokeWidth(4);
+
+    }
+
+    public static Builder newBuilder(Context context) {
+        return new Builder(context);
     }
 
     public DividerGridItemDecoration marginResId(@DimenRes int top, @DimenRes int bottom) {
@@ -188,6 +203,41 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
         } else {
             outRect.set(0, 0, mWidth,
                     mWidth);
+        }
+    }
+
+    public static final class Builder {
+        private int mWidth;
+        private Context mContext;
+        private int mColor;
+        private int divider_topmargin = 10;
+        private int divider_bottommargin = 10;
+
+
+        private Builder(Context context) {
+            mContext = context;
+        }
+
+        public Builder mWidth(int val) {
+            mWidth = mContext.getResources().getDimensionPixelSize(val);
+            return this;
+        }
+
+
+
+        public Builder mColor(int val) {
+            mColor = val;
+            return this;
+        }
+
+        public Builder margin(int top,int bottom){
+            divider_topmargin = mContext.getResources().getDimensionPixelSize(top);
+            divider_bottommargin = mContext.getResources().getDimensionPixelSize(bottom);
+            return this;
+        }
+
+        public DividerGridItemDecoration build() {
+            return new DividerGridItemDecoration(this);
         }
     }
 }
