@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.DimenRes;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -24,15 +25,33 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
     private int mWidth = 4;
     private int divider_topmargin = 10;
     private int divider_bottommargin = 10;
+    private Context mContext;
+    private int mColor;
 
     public DividerGridItemDecoration(Context context) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
+        mContext = context;
         mDivider = a.getDrawable(0);
         mPaint = new Paint();
-
-        mPaint.setColor(0xff00ff00);
+        mPaint.setColor(mColor);
         mPaint.setStrokeWidth(mWidth);
         a.recycle();
+    }
+
+    public DividerGridItemDecoration marginResId(@DimenRes int top, @DimenRes int bottom) {
+        divider_topmargin = mContext.getResources().getDimensionPixelSize(top);
+        divider_bottommargin = mContext.getResources().getDimensionPixelSize(bottom);
+        return this;
+    }
+
+    public DividerGridItemDecoration widthResId(@DimenRes int width) {
+        mWidth = mContext.getResources().getDimensionPixelSize(width);
+        return this;
+    }
+
+    public DividerGridItemDecoration color(int color) {
+        mColor = color;
+        return this;
     }
 
     @Override
@@ -88,8 +107,8 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
             final int right = left + mWidth;
             c.drawLine(left, top, left, bottom, mPaint);
 
-           // mDivider.setBounds(left, top, right, bottom);
-           // mDivider.draw(c);
+            // mDivider.setBounds(left, top, right, bottom);
+            // mDivider.draw(c);
         }
     }
 
